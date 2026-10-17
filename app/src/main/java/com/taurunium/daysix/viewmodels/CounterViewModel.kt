@@ -16,4 +16,8 @@ class CounterViewModel : ViewModel() {
     fun resetValue(){
         _counter.value = 0
     }
+
+    fun restoreCounter(counterValue: Int) {
+        _counter.value = counterValue
+    }
 }

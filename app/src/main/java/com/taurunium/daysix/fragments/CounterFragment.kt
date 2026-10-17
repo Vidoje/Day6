@@ -27,6 +27,16 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
         initViews()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            val counterValue = savedInstanceState.getInt("counter", 0)
+            viewModel.restoreCounter(counterValue)
+        }
+    }
+
+
     private fun initViews(){
         binding.btnPlus.setOnClickListener {
             viewModel.increaseValue()
@@ -45,8 +55,16 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("counter", viewModel.counter.value ?: 0)
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
+
+
