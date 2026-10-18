@@ -22,5 +22,10 @@
         <action
             android:id="@+id/action_instructionsFragment_to_counterFragment"
             app:destination="@id/counterFragment" />
+
+        <argument
+            android:name="repCount"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

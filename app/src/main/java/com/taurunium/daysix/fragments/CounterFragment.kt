@@ -2,9 +2,7 @@ package com.taurunium.daysix.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.taurunium.daysix.R
@@ -25,6 +23,15 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
         _binding = FragmentCounterBinding.bind(view)
 
         initViews()
+
+        val resultHandle = findNavController()
+            .getBackStackEntry(R.id.counterFragment).savedStateHandle
+
+        resultHandle.getLiveData<Int>("selectedTarget")
+            .observe(viewLifecycleOwner) { target ->
+                viewModel.setTarget(target)
+                resultHandle.remove<Int>("selectedTarget")
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,11 +54,19 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
         }
 
         binding.btnInstructions.setOnClickListener {
-            findNavController().navigate(R.id.action_counterFragment_to_instructionsFragment)
+            val args = Bundle().apply{
+                putInt("repCount", viewModel.counter.value?:0)
+            }
+
+            findNavController().navigate(R.id.action_counterFragment_to_instructionsFragment, args)
         }
 
         viewModel.counter.observe(viewLifecycleOwner){counter->
             binding.txtCounter.text = counter.toString()
+        }
+
+        viewModel.target.observe(viewLifecycleOwner) { target ->
+            binding.txtTarget.text = "Target: $target reps"
         }
     }
 
