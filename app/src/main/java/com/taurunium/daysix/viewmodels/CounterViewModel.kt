@@ -2,29 +2,34 @@ package com.taurunium.daysix.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
-class CounterViewModel : ViewModel() {
-    private val _counter = MutableLiveData(0)
-    val counter: LiveData<Int> = _counter
+class CounterViewModel(
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
+    val counter: LiveData<Int> =
+        savedStateHandle.getLiveData(KEY_COUNTER, 0)
 
-    private val _target = MutableLiveData(0)
-    val target: LiveData<Int> = _target
+    val target: LiveData<Int> =
+        savedStateHandle.getLiveData(KEY_TARGET, 0)
 
-    fun increaseValue(){
-        _counter.value = (_counter.value ?: 0) + 1
+    fun increaseValue() {
+        savedStateHandle[KEY_COUNTER] = (counter.value ?: 0) + 1
     }
 
-    fun resetValue(){
-        _counter.value = 0
-    }
-
-    fun restoreCounter(counterValue: Int) {
-        _counter.value = counterValue
+    fun resetValue() {
+        savedStateHandle[KEY_COUNTER] = 0
     }
 
     fun setTarget(value: Int) {
-        _target.value = value
+        savedStateHandle[KEY_TARGET] = value
+    }
+
+
+    companion object {
+        private const val KEY_COUNTER = "counter"
+        private const val KEY_TARGET = "target"
     }
 }

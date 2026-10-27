@@ -37,10 +37,7 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState != null) {
-            val counterValue = savedInstanceState.getInt("counter", 0)
-            viewModel.restoreCounter(counterValue)
-        }
+
     }
 
 

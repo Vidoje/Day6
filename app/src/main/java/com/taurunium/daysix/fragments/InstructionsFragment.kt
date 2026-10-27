@@ -20,7 +20,7 @@ class InstructionsFragment : Fragment(R.layout.fragment_instructions) {
         val repCount = arguments?.getInt("repCount", 0) ?: 0
 
 
-        binding.txtInstructions.text = "You completed $repCount steps"
+        binding.txtInstructions.text = "You completed $repCount reps"
 
         binding.btnUseTarget.setOnClickListener {
             val navController = findNavController()
