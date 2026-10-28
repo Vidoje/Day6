@@ -3,8 +3,10 @@ package com.taurunium.daysix.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import com.taurunium.daysix.R
 import com.taurunium.daysix.databinding.FragmentCounterBinding
 import com.taurunium.daysix.viewmodels.CounterViewModel
@@ -15,7 +17,9 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
     private var _binding: FragmentCounterBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: CounterViewModel by viewModels()
+    private val viewModel: CounterViewModel  by navGraphViewModels(
+        R.id.workout_graph
+    )
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,13 +37,6 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
                 resultHandle.remove<Int>("selectedTarget")
             }
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
 
     private fun initViews(){
         binding.btnPlus.setOnClickListener {
@@ -65,13 +62,14 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
         viewModel.target.observe(viewLifecycleOwner) { target ->
             binding.txtTarget.text = "Target: $target reps"
         }
-    }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("counter", viewModel.counter.value ?: 0)
+        binding.btnFinishWorkout.setOnClickListener {
+            findNavController().popBackStack(
+                R.id.workout_graph,
+                true
+            )
+        }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
