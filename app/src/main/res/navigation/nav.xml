@@ -29,6 +29,9 @@
             <action
                 android:id="@+id/action_counterFragment_to_instructionsFragment"
                 app:destination="@id/instructionsFragment" />
+            <action
+                android:id="@+id/action_counterFragment_to_targetEditorFragment"
+                app:destination="@id/targetEditorFragment" />
         </fragment>
 
         <fragment
@@ -41,6 +44,19 @@
                 android:name="repCount"
                 app:argType="integer"
                 android:defaultValue="0" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/targetEditorFragment"
+            android:name="com.taurunium.daysix.fragments.TargetEditorFragment"
+            android:label="TargetEditor"
+            tools:layout="@layout/fragment_target_editor">
+
+            <argument
+                android:name="initialTarget"
+                app:argType="integer" />
+
+
         </fragment>
 
     </navigation>

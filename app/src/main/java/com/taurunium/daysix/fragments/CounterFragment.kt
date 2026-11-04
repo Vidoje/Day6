@@ -69,6 +69,18 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
                 true
             )
         }
+
+        binding.btnEditTarget.setOnClickListener {
+            val currentTarget = viewModel.target.value ?: 0
+            val args = Bundle().apply {
+                putInt("initialTarget", currentTarget)
+            }
+
+            findNavController().navigate(
+                R.id.action_counterFragment_to_targetEditorFragment,
+                args
+            )
+        }
     }
 
     override fun onDestroyView() {
