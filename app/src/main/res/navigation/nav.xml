@@ -20,6 +20,16 @@
         android:id="@+id/workout_graph"
         app:startDestination="@id/counterFragment">
 
+        <argument
+            android:name="exerciseName"
+            app:argType="string"
+            android:defaultValue="Workout" />
+
+        <argument
+            android:name="initialTarget"
+            app:argType="integer"
+            android:defaultValue="0" />
+
         <fragment
             android:id="@+id/counterFragment"
             android:name="com.taurunium.daysix.fragments.CounterFragment"

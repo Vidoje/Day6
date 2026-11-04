@@ -12,9 +12,13 @@ class CounterViewModel(
     val counter: LiveData<Int> =
         savedStateHandle.getLiveData(KEY_COUNTER, 0)
 
-    val target: LiveData<Int> =
-        savedStateHandle.getLiveData(KEY_TARGET, 0)
+    val target: LiveData<Int> = savedStateHandle.getLiveData(
+        KEY_TARGET,
+        savedStateHandle.get<Int>("initialTarget") ?: 0
+    )
 
+    val exerciseName: LiveData<String> =
+        savedStateHandle.getLiveData("exerciseName", "Workout")
     fun increaseValue() {
         savedStateHandle[KEY_COUNTER] = (counter.value ?: 0) + 1
     }

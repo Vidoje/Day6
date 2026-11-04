@@ -36,6 +36,7 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
                 viewModel.setTarget(target)
                 resultHandle.remove<Int>("selectedTarget")
             }
+
     }
 
     private fun initViews(){
@@ -61,6 +62,10 @@ class CounterFragment : Fragment(R.layout.fragment_counter) {
 
         viewModel.target.observe(viewLifecycleOwner) { target ->
             binding.txtTarget.text = "Target: $target reps"
+        }
+
+        viewModel.exerciseName.observe(viewLifecycleOwner) { name ->
+            binding.txtExerciseName.text = name
         }
 
         binding.btnFinishWorkout.setOnClickListener {
