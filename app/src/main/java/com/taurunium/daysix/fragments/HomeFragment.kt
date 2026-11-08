@@ -32,17 +32,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
         binding.rvExercises.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = ExerciseAdapter { exercise ->
-            val args = Bundle().apply {
-                putString("exerciseName", exercise.name)
-                putInt("initialTarget", exercise.targetReps)
-            }
-
-            findNavController().navigate(
-                R.id.action_homeFragment_to_workout_graph,
-                args
-            )
-        }
+        val adapter = ExerciseAdapter (
+            onExerciseClick = { exercise ->
+                val args = Bundle().apply {
+                    putString("exerciseName", exercise.name)
+                    putInt("initialTarget", exercise.targetReps)
+                }
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_workout_graph,
+                    args
+                )
+            },
+            onDeleteClick = { exercise ->
+                    viewModel.removeExercise(exercise.id)
+                }
+        )
 
         binding.rvExercises.adapter = adapter
 
@@ -61,9 +65,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             )
         }
 
-        binding.btnRemoveSquats.setOnClickListener {
-            viewModel.removeExercise(exerciseId = 1L)
-        }
     }
 
     override fun onDestroyView() {

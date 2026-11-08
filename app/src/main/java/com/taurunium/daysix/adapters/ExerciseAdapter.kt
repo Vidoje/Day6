@@ -8,19 +8,24 @@ import com.taurunium.daysix.databinding.ItemExerciseBinding
 import com.taurunium.daysix.models.Exercise
 
 class ExerciseAdapter(
-    private val onExerciseClick: (Exercise) -> Unit
+    private val onExerciseClick: (Exercise) -> Unit,
+    private val onDeleteClick: (Exercise) -> Unit
 ): ListAdapter<Exercise, ExerciseAdapter.ExerciseViewHolder>(ExerciseDiffCallback()) {
 
     class ExerciseViewHolder(
         private val binding: ItemExerciseBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(exercise: Exercise, onExerciseClick: (Exercise) -> Unit) {
+        fun bind(exercise: Exercise, onExerciseClick: (Exercise) -> Unit, onDeleteClick: (Exercise) -> Unit) {
             binding.txtName.text = exercise.name
             binding.txtTarget.text = "Target: ${exercise.targetReps} reps"
 
             binding.root.setOnClickListener {
                 onExerciseClick(exercise)
+            }
+
+            binding.btnDelete.setOnClickListener {
+                onDeleteClick(exercise)
             }
         }
     }
@@ -41,7 +46,7 @@ class ExerciseAdapter(
         holder: ExerciseViewHolder,
         position: Int
     ) {
-        holder.bind(getItem(position), onExerciseClick)
+        holder.bind(getItem(position), onExerciseClick, onDeleteClick)
     }
 
 }
