@@ -3,19 +3,22 @@ package com.taurunium.daysix.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.taurunium.daysix.R
 import com.taurunium.daysix.adapters.ExerciseAdapter
 import com.taurunium.daysix.databinding.FragmentHomeBinding
-import com.taurunium.daysix.models.Exercise
+import com.taurunium.daysix.viewmodels.HomeViewModel
+import kotlin.getValue
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,24 +46,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         binding.rvExercises.adapter = adapter
 
-        adapter.submitList(
-            listOf(
-                Exercise(1L, "Squats", 10),
-                Exercise(2L, "Push-ups", 12),
-                Exercise(3L, "Lunges", 8)
-            )
-        )
+        viewModel.exercises.observe(viewLifecycleOwner) { exercises ->
+            adapter.submitList(exercises)
+        }
 
         binding.btnUpdateTarget.setOnClickListener {
-            val updatedExercises = adapter.currentList.map { exercise ->
-                if (exercise.id == 2L) {
-                    exercise.copy(targetReps = 15)
-                } else {
-                    exercise
-                }
-            }
-
-            adapter.submitList(updatedExercises)
+            viewModel.updateTarget(exerciseId = 2L, newTarget = 15)
         }
     }
 
