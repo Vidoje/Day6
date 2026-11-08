@@ -27,14 +27,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             )
         }
 
-        val exercises = listOf(
-            Exercise("Squats", 10),
-            Exercise("Push-ups", 12),
-            Exercise("Lunges", 8)
-        )
 
         binding.rvExercises.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvExercises.adapter = ExerciseAdapter(exercises) { exercise ->
+        val adapter = ExerciseAdapter { exercise ->
             val args = Bundle().apply {
                 putString("exerciseName", exercise.name)
                 putInt("initialTarget", exercise.targetReps)
@@ -44,6 +39,28 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 R.id.action_homeFragment_to_workout_graph,
                 args
             )
+        }
+
+        binding.rvExercises.adapter = adapter
+
+        adapter.submitList(
+            listOf(
+                Exercise(1L, "Squats", 10),
+                Exercise(2L, "Push-ups", 12),
+                Exercise(3L, "Lunges", 8)
+            )
+        )
+
+        binding.btnUpdateTarget.setOnClickListener {
+            val updatedExercises = adapter.currentList.map { exercise ->
+                if (exercise.id == 2L) {
+                    exercise.copy(targetReps = 15)
+                } else {
+                    exercise
+                }
+            }
+
+            adapter.submitList(updatedExercises)
         }
     }
 
