@@ -53,6 +53,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.btnUpdateTarget.setOnClickListener {
             viewModel.updateTarget(exerciseId = 2L, newTarget = 15)
         }
+
+        binding.btnAddExercise.setOnClickListener {
+            viewModel.addExercise(
+                name = "Sit-ups",
+                targetReps = 20
+            )
+        }
+
+        binding.btnRemoveSquats.setOnClickListener {
+            viewModel.removeExercise(exerciseId = 1L)
+        }
     }
 
     override fun onDestroyView() {

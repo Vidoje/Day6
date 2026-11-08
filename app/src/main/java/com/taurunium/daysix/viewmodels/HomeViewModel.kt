@@ -16,6 +16,7 @@ class HomeViewModel: ViewModel() {
     )
 
     val exercises: LiveData<List<Exercise>> = _exercises
+    private var nextExerciseId = 4L
 
     fun updateTarget(exerciseId: Long, newTarget: Int) {
         _exercises.value = _exercises.value.orEmpty().map { exercise ->
@@ -24,6 +25,23 @@ class HomeViewModel: ViewModel() {
             } else {
                 exercise
             }
+        }
+    }
+
+
+    fun addExercise(name: String, targetReps: Int) {
+        val exercise = Exercise(
+            id = nextExerciseId++,
+            name = name,
+            targetReps = targetReps
+        )
+
+        _exercises.value = _exercises.value.orEmpty() + exercise
+    }
+
+    fun removeExercise(exerciseId: Long) {
+        _exercises.value = _exercises.value.orEmpty().filter { exercise ->
+            exercise.id != exerciseId
         }
     }
 }
